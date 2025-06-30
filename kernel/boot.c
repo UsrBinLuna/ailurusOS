@@ -37,9 +37,6 @@ void kernel_entry(void) {
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
     kprint("Hello World!", 1);
-    kprint("i hate c", 5);
-
-    kprint("i fucked your mom last night", 7);
 
 
     // done, hang
