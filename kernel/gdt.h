@@ -22,6 +22,6 @@ void fillGdt(void);
 void loadGdt(void);
 void reload_segments(void);
 
-extern uint8_t gdt[GDT_ENTRIES][8];
+extern uint8_t gdt[GDT_ENTRIES][16];
 
 #endif // GDT_H
