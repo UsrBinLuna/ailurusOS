@@ -3,6 +3,9 @@
 #include "font_data.h"
 #include "../framebuffer.h"
 
+#define MAX_COLS 80
+#define MAX_ROWS 30
+
 void print_char(int ascii_code, uint8_t text_col, uint8_t text_row) {
     const uint8_t* glyph = font[ascii_code];
 
@@ -19,11 +22,31 @@ void print_char(int ascii_code, uint8_t text_col, uint8_t text_row) {
     }
 }
 
-void kprint(char *str, uint8_t row) {
-    size_t length = strlen(str);
+void kprint(const char *str) {
+    uint8_t col = 0;
+    static uint8_t current_row = 0;
 
-    for (size_t i = 0; i < length; i++) {
-        int ascii_code = (unsigned char)str[i];
-        print_char(ascii_code, i, row);
+    for (size_t i = 0; str[i] != '\0'; i++) {
+        char c = str[i];
+
+        if (c == '\n') {
+            col = 0;
+            current_row++;
+        } else {
+            print_char((unsigned char)c, col, current_row);
+            col++;
+
+            if (col >= MAX_COLS) {
+                col = 0;
+                current_row++;
+            }
+        }
+
+        if (current_row >= MAX_ROWS) {
+            // TODO: scrolling
+            break;
+        }
     }
+
+    current_row++;
 }
