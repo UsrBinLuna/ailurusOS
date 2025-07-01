@@ -2,7 +2,7 @@
 #include "gdt.h"
 #include "../lib/error.h"
 
-uint8_t gdt[GDT_ENTRIES][16];
+uint8_t gdt[GDT_ENTRIES][8];
 
 void encodeGdtEntry(uint8_t *target, struct GDT source) {
     if (source.limit > 0xFFFFF) {kerror("GDT cannot encode limits larger than 0xFFFFF");}
