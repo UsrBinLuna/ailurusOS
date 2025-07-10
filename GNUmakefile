@@ -68,7 +68,7 @@ all: bin/$(OUTPUT)
 -include $(HEADER_DEPS)
 
 
-override OBJ := $(addprefix obj/,$(SRCFILES:=.o))
+# override OBJ := $(addprefix obj/,$(SRCFILES:=.o))
 
 bin/$(OUTPUT): GNUmakefile linker.ld $(OBJ)
 	mkdir -p "$$(dirname $@)"

@@ -7,6 +7,8 @@
 #include "draw/font/draw_text.h"
 #include "interrupts.h"
 #include "gdt.h"
+#include "idt.h"
+#include "pic.h"
 #include "../lib/syscalls.h"
 
 // limine boot stuff
@@ -54,6 +56,16 @@ void kernel_entry(void) {
     kprint("[ GDT ] Loading GDT");
     reload_segments();
     kprint("[ GDT ] Reloaded Segments");
+
+    PIC_remap(0x20, 0x28);
+    idt_init();
+    irq_install();
+
+    kprint("[ IRQ ] Unmasked Line 1 (KEYBOARD)");
+    IRQ_clear_mask(1); // keyboard input
+
+    __asm__ volatile ("sti");
+    kprint("[ GDT ] Interrupts Enabled");
 
     // done, hang
     hcf();
