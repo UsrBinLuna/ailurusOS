@@ -5,10 +5,12 @@
 #include "memory.h"
 #include "draw/framebuffer.h"
 #include "draw/font/draw_text.h"
+#include "interrupts/ps2.h"
 #include "interrupts.h"
 #include "gdt.h"
 #include "idt.h"
 #include "pic.h"
+#include "io.h"
 #include "../lib/syscalls.h"
 
 // limine boot stuff
@@ -20,8 +22,6 @@ static volatile LIMINE_REQUESTS_START_MARKER;
 
 __attribute__((used, section(".limine_requests_end")))
 static volatile LIMINE_REQUESTS_END_MARKER;
-
-
 
 // kernel entry point //
 void kernel_entry(void) {
@@ -58,14 +58,18 @@ void kernel_entry(void) {
     kprint("[ GDT ] Reloaded Segments");
 
     PIC_remap(0x20, 0x28);
-    idt_init();
-    irq_install();
 
-    kprint("[ IRQ ] Unmasked Line 1 (KEYBOARD)");
-    IRQ_clear_mask(1); // keyboard input
+    ps2_init();
+    idt_init();
+
+    irq_install();
 
     __asm__ volatile ("sti");
     kprint("[ GDT ] Interrupts Enabled");
+    IRQ_clear_mask(0); // timer input
+    kprint("[ IRQ ] Unmasked Line 1 (TIMER)");
+    IRQ_clear_mask(1); // keyboard input
+    kprint("[ IRQ ] Unmasked Line 1 (KEYBOARD)");
 
     // done, hang
     hcf();

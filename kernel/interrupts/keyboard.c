@@ -9,12 +9,12 @@ void keyboard_handler() {
 
     // ignore break codes
     if (scancode & 0x80) {
-        return;
+        PIC_sendEOI(1);
+    } else {
+        char buf[4];
+        u8_to_str(scancode, buf);
+        kprint(buf);
+        
+        PIC_sendEOI(1);
     }
-
-    char buf[4];
-    u8_to_str(scancode, buf);
-    kprint(buf);
-    
-    PIC_sendEOI(0x20);
 }

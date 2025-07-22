@@ -4,6 +4,7 @@
 __attribute__((aligned(0x10))) static idt_entry_t idt[256];
 static idtr_t idtr;
 
+extern void irq0_stub(void);
 extern void irq1_stub(void);
 
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
@@ -28,11 +29,13 @@ void idt_init() {
         vectors[vector] = true;
     }
 
+    irq_install();
+
     __asm__ volatile ("lidt %0" : : "m"(idtr));
     kprint("[ IDT ] Loaded IDT");
-    __asm__ volatile ("sti");
 }
 
 void irq_install() {
-    idt_set_descriptor(0x21, irq1_stub, 0x8E); // 0x8E = interrupt gate
+    idt_set_descriptor(32, irq0_stub, 0x8E); // Timer
+    idt_set_descriptor(33, irq1_stub, 0x8E); // Keyboard
 }

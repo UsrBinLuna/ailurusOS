@@ -4,4 +4,4 @@ set -xe
 make clean
 make
 bash create_disk_image.sh
-qemu-system-x86_64 -m 1G -drive file=ailurus.hdd,format=raw
+qemu-system-x86_64 -m 1G -drive file=ailurus.hdd,format=raw -d int -no-reboot -no-shutdown -serial stdio
