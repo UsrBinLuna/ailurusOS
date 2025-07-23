@@ -24,3 +24,10 @@ void pixel(uint32_t x, uint32_t y, uint32_t color) {
     uint64_t pitch = fb->pitch / 4;
     fb_ptr[y * pitch + x] = color;
 }
+
+uint32_t get_pixel(uint32_t x, uint32_t y) {
+    struct limine_framebuffer *fb = get_framebuffer();
+    uint32_t *fb_ptr = (uint32_t *)fb->address;
+    uint64_t pitch = fb->pitch / 4;
+    return fb_ptr[y * pitch + x];
+}

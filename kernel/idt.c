@@ -20,7 +20,7 @@ void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
 }
 
 void idt_init() {
-    kprint("[ IDT ] Initializing IDT");
+    kprint("[ IDT ] Initializing IDT\n");
     idtr.base = (uintptr_t)&idt[0];
     idtr.limit = (uint16_t)sizeof(idt_entry_t) * IDT_MAX_DESCRIPTORS - 1;
 
@@ -32,7 +32,7 @@ void idt_init() {
     irq_install();
 
     __asm__ volatile ("lidt %0" : : "m"(idtr));
-    kprint("[ IDT ] Loaded IDT");
+    kprint("[ IDT ] Loaded IDT\n");
 }
 
 void irq_install() {

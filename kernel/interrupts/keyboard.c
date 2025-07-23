@@ -3,6 +3,7 @@
 #include "../pic.h"
 #include "../draw/font/draw_text.h"
 #include "../../lib/convert.h"
+#include "../draw/framebuffer.h"
 
 void keyboard_handler() {
     uint8_t scancode = inb(0x60);
@@ -14,6 +15,7 @@ void keyboard_handler() {
         char buf[4];
         u8_to_str(scancode, buf);
         kprint(buf);
+        kprint("\n");
         
         PIC_sendEOI(1);
     }

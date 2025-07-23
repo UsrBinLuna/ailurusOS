@@ -26,11 +26,11 @@ void ps2_init() {
     // Test controller
     outb(PS2_COMMAND, 0xAA);
     if(inb(PS2_DATA) != 0x55) {
-        kprint("[ PS2 ] Controller test failed!");
+        kprint("[ PS2 ] Controller test failed!\n");
         return;
     }
     
     // Enable keyboard port
     outb(PS2_COMMAND, 0xAE);
-    kprint("[ PS2 ] Keyboard enabled");
+    kprint("[ PS2 ] Keyboard enabled\n");
 }

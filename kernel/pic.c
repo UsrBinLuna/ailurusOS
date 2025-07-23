@@ -32,7 +32,7 @@ void PIC_sendEOI(uint8_t irq) {
 #define ICW4_SFNM	        0x10
 
 void PIC_remap(int offset1, int offset2) {
-    kprint("[ PIC ] Offsets set");
+    kprint("[ PIC ] Offsets set\n");
 	outb(PIC1_COMMAND, ICW1_INIT | ICW1_ICW4);
 	io_wait();
 	outb(PIC2_COMMAND, ICW1_INIT | ICW1_ICW4);
@@ -54,7 +54,7 @@ void PIC_remap(int offset1, int offset2) {
 	// Unmask both PICs.
 	outb(PIC1_DATA, 0);
 	outb(PIC2_DATA, 0);
-    kprint("[ PIC ] Unmasked PIC");
+    kprint("[ PIC ] Unmasked PIC\n");
 }
 
 void PIC_disable(void) {

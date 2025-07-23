@@ -38,24 +38,24 @@ void kernel_entry(void) {
 
     bool interrupts = are_interrupts_enabled();
     if (interrupts) {
-        kprint("[ GDT ] Interrupts enabled: TRUE");
+        kprint("[ GDT ] Interrupts enabled: TRUE\n");
     } else {
-        kprint("[ GDT ] Interrupts enabled: FALSE");
+        kprint("[ GDT ] Interrupts enabled: FALSE\n");
     }
 
     unsigned long f;
     
     if (interrupts) {
-        kprint("[ GDT ] Disabling interrupts");
+        kprint("[ GDT ] Disabling interrupts\n");
         f = save_irqdisable();
     }
 
     fillGdt();
-    kprint("[ GDT ] Populating GDT");
+    kprint("[ GDT ] Populating GDT\n");
     loadGdt();
-    kprint("[ GDT ] Loading GDT");
+    kprint("[ GDT ] Loading GDT\n");
     reload_segments();
-    kprint("[ GDT ] Reloaded Segments");
+    kprint("[ GDT ] Reloaded Segments\n");
 
     PIC_remap(0x20, 0x28);
 
@@ -65,11 +65,11 @@ void kernel_entry(void) {
     irq_install();
 
     __asm__ volatile ("sti");
-    kprint("[ GDT ] Interrupts Enabled");
+    kprint("[ GDT ] Interrupts Enabled\n");
     IRQ_clear_mask(0); // timer input
-    kprint("[ IRQ ] Unmasked Line 1 (TIMER)");
+    kprint("[ IRQ ] Unmasked Line 1 (TIMER)\n");
     IRQ_clear_mask(1); // keyboard input
-    kprint("[ IRQ ] Unmasked Line 1 (KEYBOARD)");
+    kprint("[ IRQ ] Unmasked Line 1 (KEYBOARD)\n");
 
     // done, hang
     hcf();
